@@ -1,0 +1,94 @@
+#BFS shortest path
+Maze = [[ 1,  0, 1, 1, 0, 0, 0, 1 ],
+        [ 1,  0, 0,'S',1, 1, 1, 0 ],
+        [ 0,  1, 0, 0, 0, 0, 0, 1 ],
+        ['E', 0, 0, 1, 0, 0, 1, 0 ],
+        [ 1,  0, 0, 0, 1, 0, 1, 1 ],
+        [ 0,  1, 0, 1, 1, 1, 0, 0 ],
+        [ 0,  1, 1, 0, 0, 1, 1, 0 ],
+        [ 1,  1, 0, 0, 1, 1, 0, 0 ]]
+
+visited = []; Queue = []; parent = {}; path = []
+def start(Maze):
+  for i,row in enumerate(Maze):
+    for j,col in enumerate(row):
+      if Maze[i][j] == 'S':
+        return i,j
+
+for i,row in enumerate(Maze):
+    for j,col in enumerate(row):
+      if Maze[i][j] == 'E':
+        path.append((i,j))        
+        
+r,c = start(Maze)
+Queue.append((r,c))
+visited.append((r,c))
+
+def move():
+  try:
+    i,j = Queue[0]
+    Queue.pop(0)
+  except:
+    return None    
+
+  if j>0:
+    if Maze[i][j-1] == 1:
+        pass
+    else:
+        if (i,j-1) not in visited:
+          Queue.append((i,j-1))
+          visited.append((i,j-1))
+          parent[f'({i},{j-1})'] = (i,j)     
+        if Maze[i][j-1] == 'E' and (i,j-1) in visited:
+          return True  
+
+  if j<7:
+    if Maze[i][j+1] == 1:
+        pass
+    else:
+        if (i,j+1) not in visited:
+          Queue.append((i,j+1))
+          visited.append((i,j+1))
+          parent[f'({i},{j+1})'] = (i,j)   
+        if Maze[i][j+1] == 'E' and (i,j+1) in visited:
+          return True 
+         
+  if i>0:
+    if Maze[i-1][j] == 1:
+        pass
+    else:
+        if (i-1,j) not in visited:
+          Queue.append((i-1,j))
+          visited.append((i-1,j))
+          parent[f'({i-1},{j})'] = (i,j)  
+        if Maze[i-1][j] == 'E' and (i-1,j) in visited:
+          return True 
+        
+  if i<7:
+    if Maze[i+1][j] == 1:
+        pass
+    else:
+        if (i+1,j) not in visited:
+          Queue.append((i+1,j))
+          visited.append((i+1,j))
+          parent[f'({i+1},{j})'] = (i,j)    
+        if Maze[i+1][j] == 'E' and (i+1,j) in visited:
+          return True 
+
+def optimalPath(path):
+  r,c = path[-1]
+  if Maze[r][c] == 'S' and (r,c) in path:
+    return True
+  if not parent[f'({r},{c})'] in path:
+      path.append(parent[f'({r},{c})'])
+
+def game():
+  while Queue != []:
+    if move():
+      for i in range(len(visited)):
+        optimalPath(path)
+  for i in path[::-1]:
+    print(i, end = '->') 
+  return 
+
+game()
