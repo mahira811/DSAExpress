@@ -1,0 +1,30 @@
+#STACK
+class Stack:
+  def __init__(self,size):
+    self.st = [] 
+    self.top = -1
+    self.size = size
+
+  def push(self,e):
+    if self.top == self.size-1:
+      print('Stack overflow')
+      return
+    self.st.append(e)
+    self.top += 1
+  def pop(self):
+    if self.top == -1:
+      print('Stack underflow')
+    try:
+      self.st.pop(self.top)
+      self.top -= 1
+    except (IndexError):
+      print('Stack underflow')
+
+  def display(self):
+    for i in self.st:
+      print(i)
+
+s = Stack(5); s.push('A'); s.push(ord('A')); s.push('B'); s.push('C'); s.push('D'); s.push('E')
+s.display()
+s.pop(); s.display()
+s.push(ord('E')); s.display()
